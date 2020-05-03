@@ -6,7 +6,7 @@ Copy the file and run it locally:
 ./rm-images.sh
 ```
 
-Or use Docker
+Or use Docker:
 
 ```bash
 docker run -it --rm stevemar/image-deleter
