@@ -1,0 +1,10 @@
+name: 'Stale Image Remover'
+description: 'Remove stale images from your repo'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
+branding:
+  icon: 'git-pull-request'
+  color: 'blue'
