@@ -1,5 +1,7 @@
 FROM bash:4.4
 
-COPY rm-images.sh /
+RUN apk add --no-cache git grep
 
-CMD ["bash", "/rm-images.sh"]
+COPY rm-images.sh .
+
+CMD [ "bash", "/rm-images.sh", "/source" ]

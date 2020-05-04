@@ -1,5 +1,3 @@
-#!/bin/bash
-#
 # Copyright IBM 2018-2020 All Rights Reserved
 #
 # SPDX-License-Identifier: MIT
@@ -10,12 +8,19 @@
 # are referenced anywhere in the project using grep, and removed
 # if no matches are found.
 
+[[ -n ${DEBUG} ]] && set -eox
+
+if ! [ -z $1 ]; then
+    cd $1
+    echo "Looking for unused images in $1"
+fi
+
 imagepaths=$(find . -name '*.jpg' -o -name '*.jpeg' -o -name '*.png')
 counter=0
 
 for imagepath in $imagepaths; do
     filename=$(basename -- $imagepath)
-    if ! grep -q -r --exclude-dir=".git" $filename .; then
+    if ! grep --exclude-dir '.git' -q -r $filename .; then
         git rm $imagepath
         counter=$((counter+1))
     fi
