@@ -11,9 +11,13 @@
 [[ -n ${DEBUG} ]] && set -eox
 
 if ! [ -z $1 ]; then
-    cd $1
-    echo "Looking for unused images in $1"
+    if [[ -d $1 ]]
+    then
+        cd $1
+    fi
 fi
+
+echo "Looking for unused images in $(pwd)"
 
 imagepaths=$(find . -name '*.jpg' -o -name '*.jpeg' -o -name '*.png')
 counter=0
@@ -29,5 +33,5 @@ done
 if [ "$counter" -eq "0" ]; then
     echo "No images were removed!"
 else
-    echo "Removed a total $counter images, w00t!"
+    echo "A total of $counter images were marked for removal, w00t!"
 fi
