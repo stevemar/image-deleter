@@ -1,24 +1,62 @@
 # image-deleter
 
-There's only one script in the repo, it deletes image (PNG, JPG, JPEG) files that are not currently being used in a git repository.
+There's only one script in the repo. It marks images (PNG, JPG, JPEG) for deletion using `git rm` based on whether or not they are referenced anywhere in the repo. There are multiple ways to run this script.
 
-## Running the script
+### Run in a container
 
-For convenience, there is an image on [Docker Hub](https://hub.docker.com/r/stevemar/image-deleter), run this command from your git project root:
+There is a [containerized version](Dockerfile) of the script available on [Docker Hub](https://hub.docker.com/r/stevemar/image-deleter). run this command from your project root:
 
 ```bash
 docker run -v `pwd`:/source stevemar/image-deleter:latest
 ```
 
-Or feel free to copy the file and run it locally:
+### Run as a GitHub Action
+
+The script is also available as a [GitHub Action](action.yml). See this [repo](https://github.com/stevemar/testing-images) as an example. To use it in your repository perform the following:
+
+1. Create a [GitHub Secret](https://developer.github.com/v3/actions/secrets/) with the key name `GH_TOKEN` and it's value be a [GitHub API key](https://github.com/settings/tokens).
+
+2. Create a file in `.github/workflows/` and paste the following code:
+
+   ```yaml
+
+   on:
+     push:
+       branches:    
+         - master
+
+   jobs:
+     rm_old_images:
+       runs-on: ubuntu-latest
+       name: A job to remove images
+       steps:
+         - name: Checking out our code
+           uses: actions/checkout@master
+         - name: Remove the images
+           uses: stevemar/image-deleter@v1.0.1
+         - name: Create Pull Request
+           uses: peter-evans/create-pull-request@v2
+           with:
+             token: ${{ secrets.GH_TOKEN }}
+             commit-message: Remove unused images
+             title: '[Automated PR] Remove unused images'
+             body: |
+               Found a few images that can be removed
+
+               [1]: https://github.com/stevemar/image-deleter
+         - name: Check outputs
+           run: |
+             echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
+             echo "Pull Request Number - ${{ steps.cpr.outputs.pr_number }}"
+     ```
+
+### Run locally
+
+Just clone the repo, or copy and paste the code, and run it.
 
 ```bash
 ./rm-images.sh
 ```
-
-## The output
-
-The script will run `git rm` on the unused images. It's up to you to run `git commit` and `git push`.
 
 ## Tips
 
