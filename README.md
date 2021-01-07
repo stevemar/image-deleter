@@ -37,7 +37,7 @@ The script is also available as a [GitHub Action](action.yml). See this [repo](h
          - name: Remove the images
            uses: stevemar/image-deleter@v1.0.1
          - name: Create Pull Request
-           uses: peter-evans/create-pull-request@v2
+           uses: peter-evans/create-pull-request@v3
            with:
              token: ${{ secrets.GH_TOKEN }}
              commit-message: Remove unused images
@@ -48,8 +48,8 @@ The script is also available as a [GitHub Action](action.yml). See this [repo](h
                [1]: https://github.com/stevemar/image-deleter
          - name: Check outputs
            run: |
-             echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
-             echo "Pull Request Number - ${{ steps.cpr.outputs.pr_number }}"
+             echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+             echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
      ```
 
 ### Run locally
