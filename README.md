@@ -2,6 +2,8 @@
 
 There's only one script in the repo. It marks images (PNG, JPG, JPEG) for deletion using `git rm` based on whether or not they are referenced anywhere in the repo. There are multiple ways to run this script.
 
+> Additional documentation is available on my blog: <https://www.stevemar.net/github-actions-rm-images/>
+
 ### Run in a container
 
 There is a [containerized version](Dockerfile) of the script available on [Docker Hub](https://hub.docker.com/r/stevemar/image-deleter). run this command from your project root:
